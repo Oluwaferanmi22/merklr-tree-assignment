@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Airdrop Eligibility Checker</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="title">Airdrop Eligibility Checker</div>
+    </header>
+
+    <section class="panel grid" id="ui">
+      <div class="row">
+        <div class="muted">Verify if an Ethereum address is eligible via a Merkle Tree proof.</div>
+      </div>
+
+      <div class="row">
+        <label class="muted">Merkle Root</label>
+        <input id="root" class="mono" type="text" readonly value="Generating..." />
+      </div>
+
+      <div class="row">
+        <label class="muted">Eligible Addresses</label>
+        <input id="eligibleCount" class="mono" type="text" readonly value="0" />
+      </div>
+
+      <div class="row">
+        <label for="addr" class="muted">Enter your Ethereum address</label>
+        <div class="input-row">
+          <input id="addr" type="text" placeholder="0x..." spellcheck="false" class="mono" />
+          <button id="checkBtn">Check Eligibility</button>
+        </div>
+        <div class="muted">Try demo addresses:</div>
+        <div id="demoBtns" class="demo-row"></div>
+      </div>
+
+      <div id="resultPanel" class="result-panel" style="display:none">
+        <div id="eligBadge" class="badge">—</div>
+        <div class="result-grid">
+          <div class="muted">Address:</div>
+          <div id="resAddress" class="code mono">—</div>
+          <div class="muted">Amount:</div>
+          <div id="resAmount" class="code mono">—</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="muted">Proof</div>
+        <div id="proof" class="code mono">—</div>
+      </div>
+    </section>
+
+    <footer>
+      Built with merkletreejs + ethers. For production, keep the allowlist server-side and only expose proofs on-demand.
+    </footer>
+  </div>
+
+  <!-- Ethers v5 UMD -->
+  <script src="https://unpkg.com/ethers@5.7.2/dist/ethers.umd.min.js" crossorigin="anonymous"></script>
+  <script src="./script.js"></script>
+</body>
+</html>
