@@ -74,11 +74,11 @@
     return utils.arrayify(utils.keccak256(dataBytes));
   }
 
-  // Convert address -> leaf bytes using solidity packing (equivalent to keccak256(abi.encodePacked(address)))
+  // Convert address -> leaf hash bytes: keccak256(abi.encodePacked(address))
   function leafForAddress(address) {
     const chk = utils.getAddress(address);
     const packed = utils.solidityPack(['address'], [chk]); // 0x...
-    return toBytes(packed);
+    return keccakBytes(toBytes(packed));
   }
 
   // Local MerkleTree (Uint8Array-based, sortPairs=true supported)
@@ -86,7 +86,11 @@
     constructor(leaves, hashFn, options = {}) {
       this.hashFn = hashFn; // (Uint8Array) -> Uint8Array
       this.sortPairs = !!options.sortPairs;
-      this.leaves = (leaves || []).map((x) => (x instanceof Uint8Array ? x : toBytes(x)));
+      const ensure32 = (u8) => {
+        const b = u8 instanceof Uint8Array ? u8 : toBytes(u8);
+        return b.length === 32 ? b : this.hashFn(b);
+      };
+      this.leaves = (leaves || []).map(ensure32);
       this.layers = [];
       this._buildLayers();
     }
